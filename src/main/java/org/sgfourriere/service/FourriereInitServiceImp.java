@@ -117,9 +117,11 @@ public class FourriereInitServiceImp implements IFourriereInit{
 
 	@Override
 	public void initPoliciers() {
-		Stream.of("AA","AB","AC","AD").forEach(p->{
+		Stream.of("Zakaria Elmoumin","Hamid Rajaoui","Mouad Farouk","Fadil Hamdaoui").forEach(p->{
 			Policier policier=new Policier();
-			policier.setNom(p);
+			String[] prenomNom=p.split(" ");
+			policier.setNom(prenomNom[0]);
+			policier.setPrenom(prenomNom[1]);
 			policierRepository.save(policier);
 		});
 		
@@ -127,9 +129,11 @@ public class FourriereInitServiceImp implements IFourriereInit{
 
 	@Override
 	public void initDeppanage() {
-		Stream.of("DA","DB","DC","DD").forEach(d->{
+		Stream.of("Said Dep","Hakim Dep","khalid Dep","Mounir Dep").forEach(d->{
 			Depannage depannage=new Depannage();
-			depannage.setNom(d);
+			String[] prenomNom=d.split(" ");
+			depannage.setNom(prenomNom[0]);
+			depannage.setPrenom(prenomNom[1]);
 			depannageRepository.save(depannage);
 		});
 		

@@ -1,5 +1,6 @@
 package org.sgfourriere.web;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -28,13 +29,18 @@ import org.sgfourriere.modele.Vehicule;
 import org.sgfourriere.modele.Vole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import javassist.compiler.ast.InstanceOfExpr;
+import javassist.expr.Instanceof;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -139,6 +145,7 @@ public class FourriereController {
 	@PostMapping("/ajouterInfraction")
 	@Transactional
 	public void addInfraction(@RequestBody FormInfraction formInfraction) {
+		System.out.println("Image Inf " + formInfraction);
 		System.out.println("form Inf " + formInfraction);
 		Infraction infraction=new Infraction();
 		Vehicule vehicule=new Vehicule();
@@ -180,4 +187,40 @@ public class FourriereController {
 		infraction.setType(formInfraction.getTypeInfraction());
 		infractionRepository.save(infraction);
 	}
+	@GetMapping("/infractions/{id}")
+	public void UpdateMontant(@PathVariable Long id) {
+		penaliteRepository.findAll().forEach(penalite -> {
+			if (penalite instanceof Parkinage) {
+				System.out.println("je suis bien dans stationnement");
+				
+			} 
+			System.out.println("je suis pas bien dans stationnement");
+		
+		});
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	public void DeleteInfraction(@PathVariable Long id) {
+		
+		Infraction infraction=infractionRepository.findById(id).get();
+		List<Penalite> penalites=penaliteRepository.findAll();
+		penalites.forEach(penalite->{
+			if(penalite.getInfraction().getId().equals(id)) {
+				System.out.println("je suis bien dans delete ");
+				penaliteRepository.delete(penalite);
+			}
+		});
+		if(infraction.getDevis()!=null) {
+			System.out.println("un devis existe");
+			devisRepository.deleteById(infraction.getDevis().getId());
+		}
+			vehiculeRepository.deleteById(infraction.getVehicule().getId());
+			
+			placeRepository.findById(infraction.getPlace().getId()).get().setOccupe(false);
+			infractionRepository.deleteById(id);
+		
+		
+	}
+	
+	
 }

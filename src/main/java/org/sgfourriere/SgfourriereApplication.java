@@ -14,6 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+
+
 @SpringBootApplication
 public class SgfourriereApplication implements CommandLineRunner{
 	@Autowired
@@ -41,10 +43,14 @@ public class SgfourriereApplication implements CommandLineRunner{
 		 */
 		accountService.save(new AppRole(null,"USER"));
 		accountService.save(new AppRole(null,"ADMIN"));
-		Stream.of("user1","user2","user3","admin").forEach(un->{
+		Stream.of("Zakaria","user2","user3","Ennaouri").forEach(un->{
 			accountService.saveUser(new AppUser(null,un,"1234",null));
 		});
-			accountService.addRoleToUser("admin", "ADMIN");
+			accountService.addRoleToUser("Ennaouri", "ADMIN");
+			accountService.addRoleToUser("Ennaouri", "USER");
+			accountService.addRoleToUser("Zakaria", "USER");
+			accountService.addRoleToUser("user2", "USER");
+			accountService.addRoleToUser("user3", "USER");
 		}
 			
 		

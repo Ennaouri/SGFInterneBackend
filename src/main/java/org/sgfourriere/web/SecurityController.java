@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
+@CrossOrigin
 public class SecurityController {
 	@Autowired
 	private AccountService accountService;
